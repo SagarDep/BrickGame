@@ -16,11 +16,14 @@ public interface Constants {
     // Player constants
     float PLAYER_SQUARE_DIMENSIONS = 1.0f;
     Color PLAYER_COLOR= Color.BLACK;
-    float PLAYER_MOVEMENT_SPEED = 10.0f;
     float PLAYER_OFFSET = 1.1f;
 
     // Enemy constants
-    Vector2 ENEMY_GRAVITY = new Vector2(0, -5.0f);
+    Color ENEMY_COLOR= Color.BROWN;
+    Vector2 ENEMY_GRAVITY = new Vector2(0, -20.0f);
+    int WAIT_TIME_SECS = 5;
+
+
 
 
 

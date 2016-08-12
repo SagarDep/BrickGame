@@ -16,6 +16,8 @@ public class Player {
 
     private Vector2 position;
     private Viewport viewport;
+    Vector2 leftStartBoundary;
+    Vector2 rightStartBoundary;
 
     public Player(Viewport viewport) {
         this.viewport = viewport;
@@ -23,7 +25,23 @@ public class Player {
     }
 
     public void init() {
-        position = new Vector2(viewport.getWorldWidth() * 0.375f, (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
+
+         leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
+                - (3 * PLAYER_SQUARE_DIMENSIONS) - 1.5f * WORLD_BORDER_THICKNESS, 0);
+
+        leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
+                - (2 * PLAYER_SQUARE_DIMENSIONS)  - WORLD_BORDER_THICKNESS, (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
+
+
+        /*leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
+                - (2 * PLAYER_SQUARE_DIMENSIONS), (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
+*/
+        position = new Vector2(leftStartBoundary.x - PLAYER_SQUARE_DIMENSIONS, leftStartBoundary.y);
+
+        rightStartBoundary = new Vector2(viewport.getWorldWidth() / 2
+                + (3 * PLAYER_SQUARE_DIMENSIONS) + 2f * WORLD_BORDER_THICKNESS, 0);
+
+
     }
 
     public void render(ShapeRenderer shapeRenderer) {
@@ -46,24 +64,27 @@ public class Player {
 
     }
 
-    public void update(float delta){
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            position.x -= delta * PLAYER_MOVEMENT_SPEED;
-        }else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            position.x += delta * PLAYER_MOVEMENT_SPEED;
+    public void update(float delta) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            position.x = leftStartBoundary.x;
+           // position.x -= delta * PLAYER_MOVEMENT_SPEED;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            position.x = rightStartBoundary.x;
+            //position.x += delta * PLAYER_MOVEMENT_SPEED;
         }
 
         ensureBounds();
     }
 
-    private void ensureBounds(){
-        if(position.x + (2 * PLAYER_SQUARE_DIMENSIONS) + WORLD_BORDER_THICKNESS >= viewport.getWorldWidth() * 3 / 4){
-            position.x = ((viewport.getWorldWidth() * 3 / 4) - (2 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS);
+    private void ensureBounds() {
+        if (position.x + (2 * PLAYER_SQUARE_DIMENSIONS) + WORLD_BORDER_THICKNESS >= rightStartBoundary.x) {
+            position.x = (rightStartBoundary.x - (2 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS);
         }
 
-        if(position.x - PLAYER_SQUARE_DIMENSIONS - WORLD_BORDER_THICKNESS <= viewport.getWorldWidth() * 1 / 4){
-            position.x = ((viewport.getWorldWidth() * 1 / 4) + PLAYER_SQUARE_DIMENSIONS + WORLD_BORDER_THICKNESS);
+        if (position.x <= leftStartBoundary.x) {
+            position.x = leftStartBoundary.x;
         }
+
     }
 
 }

@@ -3,8 +3,8 @@ package com.theobencode.gamedev.pojo;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
+import static com.theobencode.gamedev.extras.Constants.ENEMY_COLOR;
 import static com.theobencode.gamedev.extras.Constants.ENEMY_GRAVITY;
-import static com.theobencode.gamedev.extras.Constants.PLAYER_COLOR;
 import static com.theobencode.gamedev.extras.Constants.PLAYER_OFFSET;
 import static com.theobencode.gamedev.extras.Constants.PLAYER_SQUARE_DIMENSIONS;
 
@@ -22,13 +22,13 @@ public class Enemy {
     }
 
     public void update(float delta) {
-        velocity.mulAdd(ENEMY_GRAVITY, delta);
-        position.mulAdd(velocity, delta);
+        //velocity.mulAdd(ENEMY_GRAVITY, delta);
+        position.mulAdd(ENEMY_GRAVITY, delta);
     }
 
     public void render(ShapeRenderer shapeRenderer) {
 
-        shapeRenderer.setColor(PLAYER_COLOR);
+        shapeRenderer.setColor(ENEMY_COLOR);
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 
         // Draw Player's body
@@ -43,6 +43,10 @@ public class Enemy {
         // Draw Player's feet
         shapeRenderer.rect(position.x + PLAYER_OFFSET, position.y - 3 * PLAYER_OFFSET, PLAYER_SQUARE_DIMENSIONS, PLAYER_SQUARE_DIMENSIONS);
         shapeRenderer.rect(position.x - PLAYER_OFFSET, position.y - 3 * PLAYER_OFFSET, PLAYER_SQUARE_DIMENSIONS, PLAYER_SQUARE_DIMENSIONS);
+
+    }
+
+    public void reposition(int x) {
 
     }
 }

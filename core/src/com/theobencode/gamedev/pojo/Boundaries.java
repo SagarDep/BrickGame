@@ -18,19 +18,22 @@ public class Boundaries {
         this.extendViewport = extendViewport;
     }
 
+
     public void render(ShapeRenderer renderer){
+
+        // Left Line boundary
         Vector2 leftStartBoundary = new Vector2(extendViewport.getWorldWidth() / 2
-                - (3 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS, 0);
+                - (3 * PLAYER_SQUARE_DIMENSIONS) - 2f * WORLD_BORDER_THICKNESS, 0);
         Vector2 leftEndBoundary = new Vector2(extendViewport.getWorldWidth() / 2
-                - (3 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS, extendViewport.getWorldHeight());
+                - (3 * PLAYER_SQUARE_DIMENSIONS) - 2f *WORLD_BORDER_THICKNESS, extendViewport.getWorldHeight());
 
         renderer.rectLine(leftStartBoundary, leftEndBoundary, WORLD_BORDER_THICKNESS);
 
         // Right Line boundary
         Vector2 rightStartBoundary = new Vector2(extendViewport.getWorldWidth() / 2
-                + (3 * PLAYER_SQUARE_DIMENSIONS) + WORLD_BORDER_THICKNESS, 0);
+                + (3 * PLAYER_SQUARE_DIMENSIONS) + 2f *WORLD_BORDER_THICKNESS, 0);
         Vector2 rightEndBoundary = new Vector2(extendViewport.getWorldWidth() / 2
-                + (3 * PLAYER_SQUARE_DIMENSIONS) + WORLD_BORDER_THICKNESS, extendViewport.getWorldHeight());
+                + (3 * PLAYER_SQUARE_DIMENSIONS) + 2f *WORLD_BORDER_THICKNESS, extendViewport.getWorldHeight());
 
 
         renderer.rectLine(rightStartBoundary, rightEndBoundary, WORLD_BORDER_THICKNESS);

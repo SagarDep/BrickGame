@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.theobencode.gamedev.extras.Constants;
 import com.theobencode.gamedev.pojo.Boundaries;
+import com.theobencode.gamedev.pojo.Enemies;
 import com.theobencode.gamedev.pojo.Player;
 
 import static com.theobencode.gamedev.extras.Constants.BORDER_COLOR;
@@ -22,13 +23,15 @@ public class GameScreen implements Screen {
     private Boundaries boundaries;
     private ExtendViewport extendViewport;
     private ShapeRenderer renderer;
+    private Enemies enemies;
 
     @Override
     public void show() {
         extendViewport = new ExtendViewport(WORLD_SIZE, WORLD_SIZE);
         renderer = new ShapeRenderer();
-        player = new Player(extendViewport);
         boundaries = new Boundaries(extendViewport);
+        player = new Player(extendViewport);
+        enemies = new Enemies(extendViewport);
 
         renderer.setAutoShapeType(true);
 
@@ -38,6 +41,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
 
         player.update(delta);
+        enemies.update(delta);
         extendViewport.apply(true);
 
         Gdx.gl.glClearColor(Constants.BACKGROUND_COLOR.r, Constants.BACKGROUND_COLOR.g, Constants.BACKGROUND_COLOR.b, 1);
@@ -50,6 +54,7 @@ public class GameScreen implements Screen {
         renderer.set(ShapeType.Filled);
         renderer.setColor(BORDER_COLOR);
         boundaries.render(renderer);
+        enemies.render(renderer);
 
         // Draw Player
         player.render(renderer);
@@ -62,6 +67,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         extendViewport.update(width, height, true);
         player.init();
+        enemies.init();
     }
 
     @Override
