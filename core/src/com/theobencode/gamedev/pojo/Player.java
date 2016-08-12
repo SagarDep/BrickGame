@@ -14,7 +14,7 @@ import static com.theobencode.gamedev.extras.Constants.*;
  */
 public class Player {
 
-    private Vector2 position;
+    Vector2 position;
     private Viewport viewport;
     Vector2 leftStartBoundary;
     Vector2 rightStartBoundary;
@@ -26,21 +26,13 @@ public class Player {
 
     public void init() {
 
-         leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
-                - (3 * PLAYER_SQUARE_DIMENSIONS) - 1.5f * WORLD_BORDER_THICKNESS, 0);
-
         leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
-                - (2 * PLAYER_SQUARE_DIMENSIONS)  - WORLD_BORDER_THICKNESS, (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
+                - (2 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS, (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
 
-
-        /*leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
-                - (2 * PLAYER_SQUARE_DIMENSIONS), (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
-*/
         position = new Vector2(leftStartBoundary.x - PLAYER_SQUARE_DIMENSIONS, leftStartBoundary.y);
 
         rightStartBoundary = new Vector2(viewport.getWorldWidth() / 2
                 + (3 * PLAYER_SQUARE_DIMENSIONS) + 2f * WORLD_BORDER_THICKNESS, 0);
-
 
     }
 
@@ -67,10 +59,9 @@ public class Player {
     public void update(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             position.x = leftStartBoundary.x;
-           // position.x -= delta * PLAYER_MOVEMENT_SPEED;
+
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             position.x = rightStartBoundary.x;
-            //position.x += delta * PLAYER_MOVEMENT_SPEED;
         }
 
         ensureBounds();
@@ -85,6 +76,17 @@ public class Player {
             position.x = leftStartBoundary.x;
         }
 
+    }
+
+    public boolean collidesWithEnemy(Enemies enemies) {
+
+        boolean collides = false;
+        for (Enemy enemy : enemies.getEnemyArray()) {
+            if (enemy.getPosition().dst(position) < PLAYER_SQUARE_DIMENSIONS *3) {
+                collides = true;
+            }
+        }
+        return collides;
     }
 
 }

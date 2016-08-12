@@ -15,7 +15,7 @@ import static com.theobencode.gamedev.extras.Constants.WORLD_BORDER_THICKNESS;
  */
 public class Enemies {
 
-    Array<Enemy> enemyArray;
+    private Array<Enemy> enemyArray;
     Viewport viewport;
     Vector2 leftStartBoundary;
     Vector2 rightStartBoundary;
@@ -28,14 +28,17 @@ public class Enemies {
     }
 
     public void init() {
+
         enemyArray = new Array<Enemy>();
         leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
                 - (2 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS, (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
         rightStartBoundary = new Vector2(viewport.getWorldWidth() / 2
                 + (3 * PLAYER_SQUARE_DIMENSIONS) + 2f * WORLD_BORDER_THICKNESS, 0);
 
-        for (int i = 1; i <= 9; i++) {
-            Vector2 newEnemyPos = new Vector2(spawnPos(), (i * viewport.getWorldHeight()) + 5);
+
+        for (int i = 1; i <= 4; i++) {
+
+            Vector2 newEnemyPos = new Vector2(spawnPos(), (i * viewport.getWorldHeight() * 0.3f) +30);
             Enemy enemy = new Enemy(newEnemyPos);
             enemyArray.add(enemy);
         }
@@ -54,37 +57,27 @@ public class Enemies {
             enemy.render(renderer);
         }
 
+        // When Enemy is below screen and out of view
+        for (int i = 0; i < enemyArray.size; i++) {
+            if (enemyArray.get(i).getPosition().y < - (PLAYER_SQUARE_DIMENSIONS + 0.4f)) {
+                enemyArray.get(i).getPosition().set(spawnPos(), ( viewport.getWorldHeight() * 0.3f) +33 );
+            }
+        }
     }
 
-    public float spawnPos(){
+    public float spawnPos() {
         float xPos;
-        float a = MathUtils.random();
-        if (a < 0.5) {
+        float rand = MathUtils.random();
+        if (rand < 0.5) {
             xPos = leftStartBoundary.x;
         } else {
             xPos = rightStartBoundary.x - (2 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS;
         }
         return xPos;
     }
+
+    public Array<Enemy> getEnemyArray() {
+        return enemyArray;
+    }
 }
 
-
-
-
-      /*  // Randomly choose position to spawn from 0- 0.5 left spawn, 0.5 - 0.9 right spawn
-        if (MathUtils.random() < 0.5) {
-            xPos = leftStartBoundary.x;
-        } else {
-            xPos = rightStartBoundary.x - (2 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS;
-        }*/
-
-       /* if (MathUtils.random() < delta * 1f) {
-            Vector2 newEnemyPos = new Vector2(xPos, viewport.getWorldHeight() + 5);
-
-            Enemy enemy = new Enemy(newEnemyPos);
-            enemyArray.add(enemy);
-        }
-
-        for (Enemy enemy : enemyArray) {
-            enemy.update(delta);
-        }*/

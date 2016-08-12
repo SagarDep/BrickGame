@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public interface Constants {
 
-    float WORLD_SIZE = 20.0f;
+    float WORLD_SIZE = 40.0f;
     float WORLD_BORDER_THICKNESS = 0.2f;
     Color BORDER_COLOR = Color.DARK_GRAY;
     Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
@@ -20,15 +20,7 @@ public interface Constants {
 
     // Enemy constants
     Color ENEMY_COLOR= Color.BROWN;
-    Vector2 ENEMY_GRAVITY = new Vector2(0, -20.0f);
-    int WAIT_TIME_SECS = 5;
-
-
-
-
-
-
-
+    Vector2 ENEMY_GRAVITY = new Vector2(0, -5.0f);
 
 
 }

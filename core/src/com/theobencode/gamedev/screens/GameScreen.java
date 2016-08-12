@@ -19,7 +19,7 @@ import static com.theobencode.gamedev.extras.Constants.WORLD_SIZE;
  */
 public class GameScreen implements Screen {
 
-    private Player player;
+    Player player;
     private Boundaries boundaries;
     private ExtendViewport extendViewport;
     private ShapeRenderer renderer;
@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
         enemies = new Enemies(extendViewport);
 
         renderer.setAutoShapeType(true);
+        //if(player.)
 
     }
 
@@ -50,10 +51,16 @@ public class GameScreen implements Screen {
         renderer.setProjectionMatrix(extendViewport.getCamera().combined);
         renderer.begin();
 
+        if (player.collidesWithEnemy(enemies)) {
+            enemies.init();
+        }
+
         // Draw world boundaries
         renderer.set(ShapeType.Filled);
         renderer.setColor(BORDER_COLOR);
         boundaries.render(renderer);
+
+        //Draw the enemies
         enemies.render(renderer);
 
         // Draw Player

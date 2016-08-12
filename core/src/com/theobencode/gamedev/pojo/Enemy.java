@@ -46,7 +46,10 @@ public class Enemy {
 
     }
 
-    public void reposition(int x) {
 
+    public Vector2 getPosition() {
+        return position;
     }
+
+
 }
