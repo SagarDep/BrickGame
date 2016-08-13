@@ -1,10 +1,13 @@
 package com.theobencode.gamedev.pojo;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.theobencode.gamedev.extras.Constants;
 
 import static com.theobencode.gamedev.extras.Constants.ENEMY_COUNT;
 import static com.theobencode.gamedev.extras.Constants.PLAYER_SQUARE_DIMENSIONS;
@@ -20,15 +23,18 @@ public class Enemies {
     private Vector2 leftStartBoundary;
     private Vector2 rightStartBoundary;
     private int enemiesDodged;
+    private Sound dodgeSound;
 
     public Enemies(Viewport viewport) {
         this.viewport = viewport;
+        dodgeSound = Gdx.audio.newSound(Gdx.files.internal("dodge_sound.wav"));
         init();
     }
 
     public void init() {
 
         enemiesDodged = 0;
+        Constants.ENEMY_GRAVITY.y = -13.0f;
 
         enemyArray = new Array<Enemy>();
         leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
@@ -60,6 +66,7 @@ public class Enemies {
 
         // When Enemy is below screen and out of view
         repositionEnemyWhenBelowScreen();
+
     }
 
     public float spawnPos() {
@@ -79,15 +86,28 @@ public class Enemies {
 
     public void repositionEnemyWhenBelowScreen() {
         for (int i = 0; i < enemyArray.size; i++) {
-            if (enemyArray.get(i).getPosition().y < -(PLAYER_SQUARE_DIMENSIONS + 0.4f)) {
+            if (enemyArray.get(i).getPosition().y < - PLAYER_SQUARE_DIMENSIONS) {
+                dodgeSound.play();
                 enemiesDodged++;
+                if(enemiesDodged > 0 && enemiesDodged % 7 == 0){
+                    Constants.ENEMY_GRAVITY.y -= 2.0f;
+                }
+
                 enemyArray.get(i).getPosition().set(spawnPos(), (viewport.getWorldHeight() * 0.3f) + 33);
             }
         }
     }
 
+
+
     public int getEnemiesDodged() {
         return enemiesDodged;
     }
+
+    public void dispose(){
+        dodgeSound.dispose();
+    }
+
+
 }
 

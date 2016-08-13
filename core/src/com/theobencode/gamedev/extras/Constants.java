@@ -22,7 +22,7 @@ public interface Constants {
 
     // Enemy constants
     Color ENEMY_COLOR= Color.BROWN;
-    Vector2 ENEMY_GRAVITY = new Vector2(0, -15.0f);
+    Vector2 ENEMY_GRAVITY = new Vector2(0, -13.0f);
     int ENEMY_COUNT = 4;
 
     int HUD_FONT_REFERENCE_SCREEN_SIZE = 480;

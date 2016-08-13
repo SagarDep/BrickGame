@@ -7,7 +7,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import static com.theobencode.gamedev.extras.Constants.*;
+import static com.theobencode.gamedev.extras.Constants.PLAYER_COLOR;
+import static com.theobencode.gamedev.extras.Constants.PLAYER_OFFSET;
+import static com.theobencode.gamedev.extras.Constants.PLAYER_SQUARE_DIMENSIONS;
+import static com.theobencode.gamedev.extras.Constants.WORLD_BORDER_THICKNESS;
 
 /**
  * Created by galaxywizkid on 8/10/16.
@@ -20,8 +23,10 @@ public class Player {
     private Vector2 rightStartBoundary;
     private int deaths;
 
+
     public Player(Viewport viewport) {
         this.viewport = viewport;
+
         deaths = 0;
         init();
     }
@@ -95,4 +100,5 @@ public class Player {
     public int getDeaths() {
         return deaths;
     }
+
 }

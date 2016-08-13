@@ -97,6 +97,7 @@ public class GameScreen implements Screen {
         font.draw(batch, "Score: " + enemies.getEnemiesDodged() + "\nTop Score: " + topScore,
                 hudViewport.getWorldWidth() - HUD_MARGIN, hudViewport.getWorldHeight() - Constants.HUD_MARGIN,
                 0, Align.right, false);
+
         batch.end();
 
     }
@@ -106,7 +107,6 @@ public class GameScreen implements Screen {
         extendViewport.update(width, height, true);
         hudViewport.update(width, height, true);
         font.getData().setScale(Math.min(width, height) / HUD_FONT_REFERENCE_SCREEN_SIZE);
-
 
         player.init();
         enemies.init();
@@ -132,5 +132,6 @@ public class GameScreen implements Screen {
         renderer.dispose();
         batch.dispose();
         font.dispose();
+        enemies.dispose();
     }
 }
