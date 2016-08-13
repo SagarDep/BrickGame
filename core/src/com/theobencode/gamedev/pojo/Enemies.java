@@ -92,12 +92,15 @@ public class Enemies {
 
     public void repositionEnemyWhenBelowScreen() {
         for (int i = 0; i < enemyArray.size; i++) {
-            if (enemyArray.get(i).getPosition().y < - PLAYER_SQUARE_DIMENSIONS) {
+            if (enemyArray.get(i).getPosition().y < -PLAYER_SQUARE_DIMENSIONS) {
                 dodgeSound.play();
                 enemiesDodged++;
-                if(enemiesDodged > 0 && enemiesDodged % 7 == 0){
+                if (enemiesDodged > 0 && enemiesDodged % 7 == 0) {
                     Constants.ENEMY_GRAVITY.y -= 2.0f;
                     speed++;
+                    if (speed % 5 == 0) {
+                        levelUpSound.play();
+                    }
                 }
 
                 enemyArray.get(i).getPosition().set(spawnPos(), (viewport.getWorldHeight() * 0.3f) + 33);
@@ -106,12 +109,11 @@ public class Enemies {
     }
 
 
-
     public int getEnemiesDodged() {
         return enemiesDodged;
     }
 
-    public void dispose(){
+    public void dispose() {
         dodgeSound.dispose();
         levelUpSound.dispose();
     }
@@ -119,7 +121,6 @@ public class Enemies {
     public int getSpeed() {
         return speed;
     }
-
 
 
 }
