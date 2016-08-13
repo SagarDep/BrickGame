@@ -24,16 +24,22 @@ public class Enemies {
     private Vector2 rightStartBoundary;
     private int enemiesDodged;
     private Sound dodgeSound;
+    private Sound levelUpSound;
+    private int speed;
+
 
     public Enemies(Viewport viewport) {
         this.viewport = viewport;
         dodgeSound = Gdx.audio.newSound(Gdx.files.internal("dodge_sound.wav"));
+        levelUpSound = Gdx.audio.newSound(Gdx.files.internal("level_up.mp3"));
+
         init();
     }
 
     public void init() {
 
         enemiesDodged = 0;
+        speed = 1;
         Constants.ENEMY_GRAVITY.y = -13.0f;
 
         enemyArray = new Array<Enemy>();
@@ -91,6 +97,7 @@ public class Enemies {
                 enemiesDodged++;
                 if(enemiesDodged > 0 && enemiesDodged % 7 == 0){
                     Constants.ENEMY_GRAVITY.y -= 2.0f;
+                    speed++;
                 }
 
                 enemyArray.get(i).getPosition().set(spawnPos(), (viewport.getWorldHeight() * 0.3f) + 33);
@@ -106,7 +113,13 @@ public class Enemies {
 
     public void dispose(){
         dodgeSound.dispose();
+        levelUpSound.dispose();
     }
+
+    public int getSpeed() {
+        return speed;
+    }
+
 
 
 }

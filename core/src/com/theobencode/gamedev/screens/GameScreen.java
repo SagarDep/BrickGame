@@ -90,8 +90,7 @@ public class GameScreen implements Screen {
         hudViewport.apply();
         batch.setProjectionMatrix(hudViewport.getCamera().combined);
         batch.begin();
-
-        font.draw(batch, "Deaths: " + player.getDeaths(),
+        font.draw(batch, "Deaths: " + player.getDeaths() + "\nSpeed: " + enemies.getSpeed(),
                 HUD_MARGIN, hudViewport.getWorldHeight() - HUD_MARGIN);
 
         font.draw(batch, "Score: " + enemies.getEnemiesDodged() + "\nTop Score: " + topScore,
