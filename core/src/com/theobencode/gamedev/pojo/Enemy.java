@@ -13,16 +13,13 @@ import static com.theobencode.gamedev.extras.Constants.PLAYER_SQUARE_DIMENSIONS;
  */
 public class Enemy {
 
-    private Vector2 velocity;
     private Vector2 position;
 
     public Enemy(Vector2 position){
         this.position = position;
-        this.velocity = new Vector2();
     }
 
     public void update(float delta) {
-        //velocity.mulAdd(ENEMY_GRAVITY, delta);
         position.mulAdd(ENEMY_GRAVITY, delta);
     }
 

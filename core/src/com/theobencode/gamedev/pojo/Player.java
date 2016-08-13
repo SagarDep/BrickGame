@@ -14,18 +14,19 @@ import static com.theobencode.gamedev.extras.Constants.*;
  */
 public class Player {
 
-    Vector2 position;
+    private Vector2 position;
     private Viewport viewport;
-    Vector2 leftStartBoundary;
-    Vector2 rightStartBoundary;
+    private Vector2 leftStartBoundary;
+    private Vector2 rightStartBoundary;
+    private int deaths;
 
     public Player(Viewport viewport) {
         this.viewport = viewport;
+        deaths = 0;
         init();
     }
 
     public void init() {
-
         leftStartBoundary = new Vector2(viewport.getWorldWidth() / 2
                 - (2 * PLAYER_SQUARE_DIMENSIONS) - WORLD_BORDER_THICKNESS, (PLAYER_SQUARE_DIMENSIONS * 4) - 0.4f);
 
@@ -86,7 +87,12 @@ public class Player {
                 collides = true;
             }
         }
+
+        if(collides) deaths++;
         return collides;
     }
 
+    public int getDeaths() {
+        return deaths;
+    }
 }
