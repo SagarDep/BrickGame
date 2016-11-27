@@ -1,6 +1,8 @@
 # BrickGame
 Relive your childhood with this 90's style brick game built with LIBGDX.
 
+https://youtu.be/1WxqzopcNwM
+
 # GamePlay
 
 ![screen shot 2016-09-28 at 8 19 32 am](https://cloud.githubusercontent.com/assets/12980868/18904192/bd77a1bc-8554-11e6-926a-4dca8adae244.png)
