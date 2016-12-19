@@ -30,7 +30,7 @@ public class Enemies {
 
     public Enemies(Viewport viewport) {
         this.viewport = viewport;
-        dodgeSound = Gdx.audio.newSound(Gdx.files.internal("dodge_sound.wav"));
+        //dodgeSound = Gdx.audio.newSound(Gdx.files.internal("dodge_sound.wav"));
         levelUpSound = Gdx.audio.newSound(Gdx.files.internal("level_up.mp3"));
 
         init();
@@ -93,8 +93,9 @@ public class Enemies {
     public void repositionEnemyWhenBelowScreen() {
         for (int i = 0; i < enemyArray.size; i++) {
             if (enemyArray.get(i).getPosition().y < -PLAYER_SQUARE_DIMENSIONS) {
-                dodgeSound.play();
-                enemiesDodged++;
+                //dodgeSound.play();
+                enemiesDodged++; // Enemies dodged counter for keeping score
+
                 if (enemiesDodged > 0 && enemiesDodged % 7 == 0) {
                     Constants.ENEMY_GRAVITY.y -= 2.0f;
                     speed++;
@@ -114,7 +115,7 @@ public class Enemies {
     }
 
     public void dispose() {
-        dodgeSound.dispose();
+        //dodgeSound.dispose();
         levelUpSound.dispose();
     }
 

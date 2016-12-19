@@ -8,7 +8,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public interface Constants {
 
-    float WORLD_SIZE = 40.0f;
+    float WORLD_SIZE = 20.0f;
+    int WORLD_SIZE1 = 40;
     float WORLD_BORDER_THICKNESS = 0.2f;
     Color BORDER_COLOR = Color.DARK_GRAY;
     Color BACKGROUND_COLOR = Color.LIGHT_GRAY;

@@ -1,7 +1,11 @@
 package com.theobencode.gamedev.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.theobencode.gamedev.BrickGame;
 import com.theobencode.gamedev.extras.Constants;
 import com.theobencode.gamedev.pojo.Boundaries;
 import com.theobencode.gamedev.pojo.Enemies;
@@ -34,26 +39,37 @@ public class GameScreen implements Screen {
 
     // On-screen drawing constants
     private ScreenViewport hudViewport;
-    private SpriteBatch batch;
+    public static SpriteBatch batch;
     private BitmapFont font;
     private int topScore;
+    private Music gameMusic;
+    private Sound dyingSound;
+    private BrickGame game;
+    Preferences prefs;
+
+    public GameScreen(BrickGame game){
+        this.game = game;
+       prefs = Gdx.app.getPreferences("TopScore Preferences");
+    }
 
 
     @Override
     public void show() {
         extendViewport = new ExtendViewport(WORLD_SIZE, WORLD_SIZE);
+        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("chubby_cat_song.wav"));
+        gameMusic.setLooping(true);
+        gameMusic.play();
+        dyingSound = Gdx.audio.newSound(Gdx.files.internal("dead_sound.mp3"));
         renderer = new ShapeRenderer();
         boundaries = new Boundaries(extendViewport);
         player = new Player(extendViewport);
         enemies = new Enemies(extendViewport);
         renderer.setAutoShapeType(true);
-
         batch = new SpriteBatch();
         hudViewport = new ScreenViewport();
         font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        topScore = 0;
-
+        topScore = prefs.getInteger("TOP_SCORE");
     }
 
     @Override
@@ -70,7 +86,11 @@ public class GameScreen implements Screen {
         renderer.begin();
 
         if (player.collidesWithEnemy(enemies)) {
-            enemies.init();
+            dyingSound.play();
+            //enemies.init();
+            game.setScreen(new MenuScreen(game));
+            this.dispose();
+            gameMusic.dispose();
         }
 
         // Draw world boundaries
@@ -86,15 +106,22 @@ public class GameScreen implements Screen {
         renderer.end();
 
         // HUD related drawing
-        topScore = Math.max(topScore, enemies.getEnemiesDodged());
+        if(enemies.getEnemiesDodged() > topScore){
+            prefs.putInteger("TOP_SCORE", enemies.getEnemiesDodged());
+            prefs.flush();
+            topScore = enemies.getEnemiesDodged();
+        }
+
         hudViewport.apply();
         batch.setProjectionMatrix(hudViewport.getCamera().combined);
         batch.begin();
-        font.draw(batch, "Deaths: " + player.getDeaths() + "\nSpeed: " + enemies.getSpeed(),
+        font.setColor(Color.WHITE);
+        font.getData().setScale(4);
+        font.draw(batch, "Speed: " + enemies.getSpeed(),
                 HUD_MARGIN, hudViewport.getWorldHeight() - HUD_MARGIN);
 
         font.draw(batch, "Score: " + enemies.getEnemiesDodged() + "\nTop Score: " + topScore,
-                hudViewport.getWorldWidth() - HUD_MARGIN, hudViewport.getWorldHeight() - Constants.HUD_MARGIN,
+                 hudViewport.getWorldWidth() - HUD_MARGIN, hudViewport.getWorldHeight()  - Constants.HUD_MARGIN,
                 0, Align.right, false);
 
         batch.end();
@@ -105,7 +132,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         extendViewport.update(width, height, true);
         hudViewport.update(width, height, true);
-        font.getData().setScale(Math.min(width, height) / HUD_FONT_REFERENCE_SCREEN_SIZE);
+        font.getData().setScale(Math.min(width, height) / HUD_FONT_REFERENCE_SCREEN_SIZE, Math.min(width, height) / HUD_FONT_REFERENCE_SCREEN_SIZE);
 
         player.init();
         enemies.init();

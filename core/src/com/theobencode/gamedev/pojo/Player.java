@@ -1,7 +1,9 @@
 package com.theobencode.gamedev.pojo;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -22,11 +24,10 @@ public class Player {
     private Vector2 leftStartBoundary;
     private Vector2 rightStartBoundary;
     private int deaths;
-
+    private Sound dodgeSound;
 
     public Player(Viewport viewport) {
         this.viewport = viewport;
-
         deaths = 0;
         init();
     }
@@ -39,6 +40,7 @@ public class Player {
 
         rightStartBoundary = new Vector2(viewport.getWorldWidth() / 2
                 + (3 * PLAYER_SQUARE_DIMENSIONS) + 2f * WORLD_BORDER_THICKNESS, 0);
+        dodgeSound = Gdx.audio.newSound(Gdx.files.internal("dodge_sound.wav"));
 
     }
 
@@ -63,12 +65,26 @@ public class Player {
     }
 
     public void update(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            position.x = leftStartBoundary.x;
 
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            position.x = rightStartBoundary.x;
+        if(Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS){
+            if(Gdx.input.justTouched()){
+                dodgeSound.play();
+                if(position.x == leftStartBoundary.x){
+                    position.x = rightStartBoundary.x;
+                }else{
+                    position.x = leftStartBoundary.x;
+                }
+            }
+        }else {
+
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isTouched()) {
+                position.x = leftStartBoundary.x;
+
+            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isTouched()) {
+                position.x = rightStartBoundary.x;
+            }
         }
+
 
         ensureBounds();
     }
